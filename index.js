@@ -49,7 +49,7 @@ async function run() {
       const filter = {_id: new ObjectId(id)};
       const options = { upsert: true };
       const updateProducts = req.body;
-      const product = {
+      const products = {
         $set: {
           name: updateProducts.name,
           brandName: updateProducts.brandName,
@@ -61,7 +61,7 @@ async function run() {
 
         }
       }
-      const result = await productCollection.updateOne(filter, product, options)
+      const result = await productCollection.updateOne(filter, products, options)
       res.send(result);
     })
 
@@ -71,6 +71,14 @@ async function run() {
       const newProduct = req.body;
       console.log(newProduct);
       const result = await productCollection.insertOne(newProduct);
+      res.send(result);
+    })
+
+    // delete
+    app.delete('/products/:id', async(req, res) =>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await productCollection.deleteOne(query);
       res.send(result);
     })
 
